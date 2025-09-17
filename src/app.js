@@ -1,9 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const { saveToFile, readFromFile } = require("./utils/fileHandler");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -14,7 +17,6 @@ app.post("/post", (req, res) => {
     return res.status(400).json({ error: "Input data is required" });
   }
 
-  // Rewrite the file with the new inputs directly
   saveToFile(JSON.stringify(inputs, null, 2))
     .then(() => res.status(200).json({ message: "Inputs saved successfully" }))
     .catch((err) =>
